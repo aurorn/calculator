@@ -63,9 +63,25 @@ main {
     font-size: 24px;
 }
 
-.btn {
+.number {
     height: 48px;
     width: 48px;
     font-size: 24px;
 }
 
+.operator {
+    height: 48px;
+    width: 48px;
+    font-size: 24px;
+}
+
+.decimal {
+    height: 48px;
+    width: 48px;
+    font-size: 24px;
+}
+.equal {
+    height: 48px;
+    width: 48px;
+    font-size: 24px;
+}
