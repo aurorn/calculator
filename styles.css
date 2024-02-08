@@ -32,7 +32,22 @@ main {
     width: 220px;
     background-color: rgb(63, 117, 63);
     margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
 
+}
+
+.previous {
+    font-size: 16px;
+    margin: 5px;
+
+}
+
+.current {
+    font-size: 24px;
+    margin: 5px;
 }
 
 .topbtns {
