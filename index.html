@@ -5,43 +5,47 @@
         <meta name="viewport" content="width=device-width">
         <title>Calculator</title>
         <link rel="Stylesheet" href="styles.css">
+        <script src="script.js" defer></script>
     </head>
 
     <body>
         <main class="main">
             <div class="calcbox" id="calc-box">
-                <div class="calcscreen" id="calc-screen"></div>
+                <div class="calcscreen" id="calc-screen">
+                    <div class="previous"></div>
+                    <div class="current"></div>
+                </div>
 
                 <div class="topbtns" id="top-btns">
-                    <div class="clearbtn" id="clear-btn">
-                        <button class="dblbtn">C</button>
+                    <div class="clearbtn">
+                        <button class="dblbtn" id="clear-btn">C</button>
                     </div>
-                    <div class="delbtn" id="del-btn">
-                        <button class="dblbtn">Del</button>
+                    <div class="delbtn">
+                        <button class="dblbtn" id="del-btn">Del</button>
                     </div>
                 </div>
 
                 <div class="botbtns" id="bot-btns">
                     <div class="numbtns" id="num-btns">
-                        <button class="btn">7</button>
-                        <button class="btn">8</button>
-                        <button class="btn">9</button>
-                        <button class="btn">/</button>
+                        <button class="number">7</button>
+                        <button class="number">8</button>
+                        <button class="number">9</button>
+                        <button class="operator">/</button>
 
-                        <button class="btn">4</button>
-                        <button class="btn">5</button>
-                        <button class="btn">6</button>
-                        <button class="btn">X</button>
+                        <button class="number">4</button>
+                        <button class="number">5</button>
+                        <button class="number">6</button>
+                        <button class="operator">X</button>
 
-                        <button class="btn">1</button>
-                        <button class="btn">2</button>
-                        <button class="btn">3</button>
-                        <button class="btn">-</button>
+                        <button class="number">1</button>
+                        <button class="number">2</button>
+                        <button class="number">3</button>
+                        <button class="operator">-</button>
 
-                        <button class="btn">.</button>
-                        <button class="btn">0</button>
-                        <button class="btn">=</button>
-                        <button class="btn">+</button>
+                        <button class="decimal">.</button>
+                        <button class="number">0</button>
+                        <button class="equal">=</button>
+                        <button class="operator">+</button>
                     </div>
                 </div>
             </div>
