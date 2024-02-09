@@ -10,21 +10,19 @@ main {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-
 }
 
 .calcbox {
     display: flex;
-    flex: 1;
     flex-direction: column;
     align-items: center;
     width: auto;
     padding: 20px;
     background-color: rgb(44, 44, 44);
     border: 3px solid;
-    border-radius: 5px;
-    border-color: transparent;
-    
+    border-radius: 10px;
+    border-color: rgba(255, 255, 255, 0.5); 
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); 
 }
 
 .calcscreen {
@@ -36,13 +34,14 @@ main {
     flex-direction: column;
     justify-content: flex-end;
     align-items: flex-end;
-
+    border: 3px solid rgba(255, 255, 255, 0.5); 
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5); 
 }
 
 .previous {
     font-size: 16px;
     margin: 5px;
-
 }
 
 .current {
@@ -52,18 +51,14 @@ main {
 
 .topbtns {
     display: flex;
-    flex: 1;
     flex-direction: row;
     padding-bottom: 10px;
     gap: 10px;
-    
 }
-
 
 .botbtns {
     display: flex;
     flex: 1;
-    
 }
 
 .numbtns {
@@ -72,31 +67,31 @@ main {
     grid-gap: 10px;
 }
 
-.dblbtn {
-    height: 48px;
-    width: 106px;
-    font-size: 24px;
-}
-
-.number {
-    height: 48px;
-    width: 48px;
-    font-size: 24px;
-}
-
-.operator {
-    height: 48px;
-    width: 48px;
-    font-size: 24px;
-}
-
-.decimal {
-    height: 48px;
-    width: 48px;
-    font-size: 24px;
-}
+.dblbtn,
+.number,
+.operator,
+.decimal,
 .equal {
     height: 48px;
     width: 48px;
     font-size: 24px;
+    background-color: rgba(255, 255, 255, 0.274); 
+    border: 2px solid rgba(255, 255, 255, 0.3); 
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5); 
+    cursor: pointer;
+}
+
+.dblbtn {
+    width: 106px;
+}
+
+
+
+.equal:hover,
+.dblbtn:hover,
+.number:hover,
+.operator:hover,
+.decimal:hover {
+    background-color: rgba(255, 255, 255, 0.2); /* Lighter background on hover */
 }
