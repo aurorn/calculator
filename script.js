@@ -2,9 +2,9 @@ let operator = '';
 let previousValue = '';
 let currentValue = '';
 
-let clear = document.querySelector("#clear-btn");
-let equal = document.querySelector(".equal");
-let decimal = document.querySelector(".decimal");
+let clearButton = document.querySelector("#clear-btn");
+let equalButton = document.querySelector(".equal");
+let decimalButton = document.querySelector(".decimal");
 let numbers = document.querySelectorAll(".number");
 let operators = document.querySelectorAll(".operator");
 let previousScreen = document.querySelector(".previous");
@@ -13,174 +13,142 @@ let deleteButton = document.querySelector("#del-btn");
 
 function handleNumberClick(num) {
     handleNumber(num);
-    currentScreen.textContent = currentValue;
+    updateCurrentScreen();
 }
 
 function handleOperatorClick(op) {
     handleOperator(op);
-    previousScreen.textContent = previousValue + " " + operator;
-    currentScreen.textContent = currentValue;
+    updatePreviousScreen();
+    updateCurrentScreen();
 }
 
-
-numbers.forEach((number) => number.addEventListener("click", function(e){
+numbers.forEach((number) => number.addEventListener("click", (e) => {
     handleNumberClick(e.target.textContent);
 }));
 
-
-operators.forEach((op) => op.addEventListener("click", function(e) {
+operators.forEach((op) => op.addEventListener("click", (e) => {
     handleOperatorClick(e.target.textContent);
 }));
 
+clearButton.addEventListener("click", clearCalculator);
+equalButton.addEventListener("click", handleEqualClick);
+decimalButton.addEventListener("click", addDecimal);
+deleteButton.addEventListener("click", handleBackspace);
+document.addEventListener("keydown", handleKeyboardInput);
 
-clear.addEventListener("click", function(){
-    previousValue = '';
-    currentValue = '';
-    operator = '';
-    previousScreen.textContent = currentValue;
-    currentScreen.textContent = currentValue;
-})
-
-equal.addEventListener("click", function(){
-    if (currentValue != '' && previousValue != ''){
-        calculate();
-        previousScreen.textContent = '';
-        if(previousValue.length <= 15){
-            currentScreen.textContent = previousValue;
-        } 
-    }
-})
-
-decimal.addEventListener("click", function(){
-    addDecimal();
-})
-
-
-function handleNumber(num){
-    if (currentValue.length <= 5){
+function handleNumber(num) {
+    if (currentValue.length <= 5) {
         currentValue += num;
     }
-    
 }
 
 function handleOperator(op) {
     if (currentValue !== "") {
         if (previousValue !== "") {
-            calculate(); 
-            previousScreen.textContent = previousValue + " " + operator; 
+            calculate();
+            updatePreviousScreen();
         } else {
-            previousValue = currentValue; 
-            previousScreen.textContent = previousValue; 
+            previousValue = currentValue;
+            updatePreviousScreen();
         }
-        operator = op; 
-        currentValue = ''; 
+        operator = op;
+        currentValue = '';
     }
 }
 
-deleteButton.addEventListener("click", function() {
-    
-    handleBackspace();
-});
+function calculate() {
+    previousValue = Number(previousValue);
+    currentValue = Number(currentValue);
+
+    if (operator === "/" && currentValue === 0) {
+        currentScreen.textContent = "Oh, look at you dividing by Zero.";
+        operator = '';
+        currentValue = '';
+        return;
+    }
+
+    switch (operator) {
+        case "+":
+            previousValue += currentValue;
+            break;
+        case "-":
+            previousValue -= currentValue;
+            break;
+        case "*":
+            previousValue *= currentValue;
+            break;
+        case "/":
+            previousValue /= currentValue;
+            break;
+    }
+
+    previousValue = roundNumber(previousValue);
+    currentScreen.textContent = previousValue;
+    operator = '';
+    currentValue = '';
+}
+
+function clearCalculator() {
+    previousValue = '';
+    currentValue = '';
+    operator = '';
+    updatePreviousScreen();
+    updateCurrentScreen();
+}
+
+function handleEqualClick() {
+    if (currentValue !== '' && previousValue !== '') {
+        calculate();
+        previousScreen.textContent = '';
+    }
+}
+
+function addDecimal() {
+    if (!currentValue.includes(".")) {
+        currentValue += '.';
+    }
+    updateCurrentScreen();
+}
 
 function handleBackspace() {
     currentScreen.textContent = currentScreen.textContent.slice(0, -1);
     currentValue = currentScreen.textContent;
 }
 
-
-function calculate(){
-    previousValue = Number(previousValue);
-    currentValue = Number(currentValue);
-    
-    if (operator === "/" && currentValue === 0) {
-        currentScreen.textContent = "Oh, look at you dividing by 0.";
-        operator = '';
-        currentValue = '';
-        return; 
-    }
-
-    if(operator === "+"){
-        previousValue += currentValue;
-        currentValue = previousValue;
-    } else if(operator === "-") {
-        previousValue -= currentValue;
-        currentValue = previousValue;
-    } else if(operator === "X") {
-        previousValue *= currentValue;
-        currentValue = previousValue;
-    } else{
-        previousValue /= currentValue;
-        currentValue = previousValue;
-    }
-      
-    previousValue = roundNumber(previousValue);
-    previousValue = previousValue.toString();
-    
-
-    currentScreen.textContent = currentValue;
-    operator = '';
-    currentValue = '';
-
-}
-
 function roundNumber(num) {
     return Math.round(num * 1000) / 1000;
 }
- 
-function addDecimal() {
-    if(!currentValue.includes(".")){
-        currentValue += '.';
-    }
-} 
-
-
 
 function handleKeyboardInput(event) {
-    
     const key = event.key;
-
-    
     if (!isNaN(key) || key === ".") {
         handleNumber(key);
-        currentScreen.textContent = currentValue;
+        updateCurrentScreen();
     }
 
-    
     if (["+", "-", "*", "/"].includes(key)) {
         handleOperator(key);
-        previousScreen.textContent = previousValue + " " + operator;
-        currentScreen.textContent = currentValue;
+        updatePreviousScreen();
+        updateCurrentScreen();
     }
 
-   
     if (key === "Enter" || key === "=") {
-        if (currentValue !== "" && previousValue !== "") {
-            calculate();
-            previousScreen.textContent = '';
-            if (previousValue.length <= 15) {
-                currentScreen.textContent = previousValue;
-            }
-        }
+        handleEqualClick();
     }
 
-   
     if (key === "c" || key === "C") {
-        previousValue = '';
-        currentValue = '';
-        operator = '';
-        previousScreen.textContent = currentValue;
-        currentScreen.textContent = currentValue;
+        clearCalculator();
     }
 
-    
     if (key === "Backspace") {
         handleBackspace();
     }
 }
 
+function updatePreviousScreen() {
+    previousScreen.textContent = previousValue + " " + operator;
+}
 
-document.addEventListener("keydown", handleKeyboardInput); 
-
-
-
-
+function updateCurrentScreen() {
+    currentScreen.textContent = currentValue;
+}
