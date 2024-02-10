@@ -1,8 +1,8 @@
-
-
 let operator = '';
-let previousValue = '';
+let previousValue1 = '';
+let previousValue2 = '';
 let currentValue = '';
+let answer = '';
 
 let clearButton = document.querySelector("#clear-btn");
 let equalButton = document.querySelector(".equal");
@@ -14,14 +14,25 @@ let currentScreen = document.querySelector(".current");
 let deleteButton = document.querySelector("#del-btn");
 
 function handleNumberClick(num) {
+    if (answer !== '') {
+        clearCalculator();
+    }
     handleNumber(num);
     updateCurrentScreen();
 }
 
 function handleOperatorClick(op) {
-    handleOperator(op);
-    updatePreviousScreen();
-    updateCurrentScreen();
+    if (answer !== '') {
+        previousValue1 = answer;
+        previousScreen.textContent = previousValue1 + ' ' + op + ' ';
+        operator = op;
+        answer = '';
+        currentValue = '';
+    } else {
+        handleOperator(op);
+        updatePreviousScreen();
+        updateCurrentScreen();
+    }
 }
 
 numbers.forEach((number) => number.addEventListener("click", (e) => {
@@ -39,27 +50,29 @@ deleteButton.addEventListener("click", handleBackspace);
 document.addEventListener("keydown", handleKeyboardInput);
 
 function handleNumber(num) {
-    if (currentValue.length <= 5) {
+    if (currentValue.length <= 8) {
         currentValue += num;
     }
 }
 
 function handleOperator(op) {
     if (currentValue !== "") {
-        if (previousValue !== "") {
+        if (previousValue1 !== "" && operator !== '') {
             calculate();
-            updatePreviousScreen();
         } else {
-            previousValue = currentValue;
-            updatePreviousScreen();
+            previousValue1 = currentValue;
+            previousScreen.textContent = previousValue1 + ' ' + op + ' ';
         }
         operator = op;
         currentValue = '';
+    } else if (previousValue1 !== '' && previousValue2 !== '') {
+        operator = op;
+        previousScreen.textContent = previousValue2 + ' ' + op + ' ';
     }
 }
 
 function calculate(){
-    previousValue = Number(previousValue);
+    previousValue1 = Number(previousValue1);
     currentValue = Number(currentValue);
     
     if (operator === "/" && currentValue === 0) {
@@ -70,42 +83,43 @@ function calculate(){
     }
 
     if(operator === "+"){
-        previousValue += currentValue;
-        currentValue = previousValue;
+        previousValue1 += currentValue;
     } else if(operator === "-") {
-        previousValue -= currentValue;
-        currentValue = previousValue;
+        previousValue1 -= currentValue;
     } else if(operator === "X") {
-        previousValue *= currentValue;
-        currentValue = previousValue;
+        previousValue1 *= currentValue;
     } else{
-        previousValue /= currentValue;
-        currentValue = previousValue;
+        previousValue1 /= currentValue;
     }
       
-    previousValue = roundNumber(previousValue);
-    previousValue = previousValue.toString();
+    previousValue1 = roundNumber(previousValue1);
+    currentValue = previousValue1.toString();
     
-
     currentScreen.textContent = currentValue;
-    operator = '';
-    currentValue = '';
-
+    
+    operator = ''; // Reset operator after calculation
+    currentValue = ''; // Reset currentValue after calculation
 }
 
-
 function clearCalculator() {
-    previousValue = '';
+    previousValue1 = '';
+    previousValue2 = '';
     currentValue = '';
     operator = '';
+    answer = '';
     updatePreviousScreen();
     updateCurrentScreen();
 }
 
 function handleEqualClick() {
-    if (currentValue !== '' && previousValue !== '') {
+    if (previousValue1 !== '' && operator !== '') {
         calculate();
-        previousScreen.textContent = '';
+        answer = previousValue1; // Store the result as answer
+        currentScreen.textContent = answer;
+        previousScreen.textContent = ''; // Clear the previous screen
+        previousValue2 = previousValue1;
+        previousValue1 = '';
+        operator = '';
     }
 }
 
@@ -152,12 +166,18 @@ function handleKeyboardInput(event) {
 }
 
 function updatePreviousScreen() {
-    previousScreen.textContent = previousValue + " " + operator;
+    let previousExpression = previousValue1 + ' ' + operator + ' ' + previousValue2;
+    if (previousExpression.length > 10) {
+        previousScreen.textContent = previousExpression.substring(0, 14) + '...';
+    } else {
+        previousScreen.textContent = previousExpression;
+    }
 }
 
 function updateCurrentScreen() {
-    currentScreen.textContent = currentValue;
+    let displayValue = currentValue;
+    if (displayValue.length > 10) {
+        displayValue = displayValue.substring(0, 14) + '...';
+    }
+    currentScreen.textContent = displayValue;
 }
-
-
-
